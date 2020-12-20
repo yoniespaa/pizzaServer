@@ -1,17 +1,27 @@
-const mysql = require('mysql');
+const sql = require('mssql');
+const { options } = require('./routes/controller');
 
-var mysqlConnection = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'root',
-  password: '1234',
-  database: 'DW'
-});
-mysqlConnection.getConnection(function (err, connection) {
-  if (err) {
-    return cb(err);
+
+var config = {
+  server: "LENOVO",
+  user: "sa", //default is sa
+  password: "Qn7101234",
+   // for local machine
+  database: "CINE_FELIZ", // name of database
+  port:1433,
+  options: {
+    encrypt: false
   }
+}
+var request;
+//var conn =  new sql.ConnectionPool(config)
+var conn = sql.connect(config, function (err) {
+  if (err) {
+    throw err;
+  }
+  this.request = new sql.Request();
   console.log('connection pool initialized')
 
 });
-exports.mysqlConnection = mysqlConnection;
+
+exports.request = request;
